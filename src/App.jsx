@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import taskk from "./data/task";
+import { Link } from "react-router-dom";
 
 function App() {
   const [task, setTask] = useState([]);
+  const [reloadTask, setReload] = useState(false);
 
   useEffect(() => {
     setTask(taskk);
-  });
+    setReload(false);
+  }, [reloadTask]);
 
   const isCompleteed = (parmaIsComp) => {
     !task[parmaIsComp].isCompleted
@@ -18,7 +21,7 @@ function App() {
   };
 
   return (
-    <div className="container">
+    <div div className="container">
       <div className="row">
         <div className="col-md-12 ">
           <div className="form-control">
@@ -38,6 +41,7 @@ function App() {
                       className="form-control btn btn-danger  rounded-pill"
                       onClick={() => {
                         setTask(task);
+                        setReload(true);
                         isCompleteed(key);
                       }}
                     >
@@ -49,6 +53,7 @@ function App() {
                       className="form-control btn btn-success  rounded-pill"
                       onClick={() => {
                         setTask(task);
+                        setReload(true);
                         isCompleteed(key);
                       }}
                     >
@@ -58,11 +63,47 @@ function App() {
                 </div>
               </div>
             ))}
+
+            <Link data={task} to="/FormNewTask">
+              <span className=" btn btn-primary mt-2 form-control  rounded-pill">
+                Nueva Tarea
+              </span>
+            </Link>
           </div>
         </div>
       </div>
     </div>
+    
   );
 }
+
+
+import { Link, useNavigate } from 'react-router-dom';
+
+function ComponentA(props) {
+  
+  const navigate = useNavigate();
+  
+  const toComponentB = () => {
+    navigate('/componentB', { state: { id: 1, name: 'sabaoon' } });
+  
+  } return (
+    <> <div> <a onClick={() => { toComponentB() }}>Component B<a /></div>
+    </>);
+} 
+
+
+import { useLocation } from 'react-router-dom';
+
+function ComponentB() {
+  const location = useLocation();
+
+  return (
+    <>
+      <div>{location.state.name}</div>
+    </>)
+}
+
+
 
 export default App;
